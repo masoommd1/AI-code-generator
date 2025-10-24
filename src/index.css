@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+body{
+  /* background-color: rgb(19, 11, 52); */
+  /* background: radial-gradient(ellipse at bottom, #1d4ed8, #1e40af, #111827); */
+  /* background: linear-gradient(to bottom left, #0f172a, #1e1a78, #0f172a); */
+  /* background: conic-gradient(at top left, #000000, #150050, #3f0071); */
+  /* background: radial-gradient(ellipse at center, #1e293b, #0f172a, #020617); */
+  background: radial-gradient(ellipse at center, #111827, #0f172a, #000000);
+  color: aliceblue;
+}

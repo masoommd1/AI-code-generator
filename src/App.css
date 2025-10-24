@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+body {
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+.sp-text {
+  background-image: linear-gradient(to right, #ee8bf3, #8513e3, #6e0569);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.sp-text-1{
+  background-image: linear-gradient(to top left, #1e293b, #6366f1, #71717a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.icon{
+  padding: 15px;
+  font-size: 20px;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+  background-color: #111620;
+  cursor: pointer;
+}
+/* ==== Dark React Select Style ==== */
+
+.dark-select .react-select__control {
+  background-color: #1f2937; /* bg-gray-800 */
+  border: 1px solid #374151; /* gray-700 */
+  color: #f9fafb; /* text-gray-50 */
+  border-radius: 0.5rem;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+.dark-select .react-select__control:hover {
+  border-color: #7c3aed; /* violet-600 */
+}
+
+.dark-select .react-select__control--is-focused {
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 1px #7c3aed;
+}
+
+/* Dropdown menu */
+.dark-select .react-select__menu {
+  background-color: #1f2937; /* same dark bg */
+  color: #f9fafb;
+  border-radius: 0.5rem;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+/* Individual options */
+.dark-select .react-select__option {
+  background-color: #1f2937;
+  color: #f9fafb;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.dark-select .react-select__option:hover {
+  background-color: #4c1d95; /* violet-900 */
+}
+
+.dark-select .react-select__option--is-focused {
+  background-color: #4c1d95;
+}
+
+.dark-select .react-select__option--is-selected {
+  background-color: #7c3aed; /* violet-600 */
+  color: #fff;
+}
+
+/* Placeholder & input text */
+.dark-select .react-select__placeholder {
+  color: #9ca3af; /* gray-400 */
+}
+
+.dark-select .react-select__single-value {
+  color: #f9fafb;
+}
+
+.dark-select .react-select__input-container {
+  color: #f9fafb;
+}
+
+/* Remove indicator separator */
+.dark-select .react-select__indicator-separator {
+  display: none;
+}
+
+/* Dropdown indicator (arrow) */
+.dark-select .react-select__dropdown-indicator {
+  color: #9ca3af;
+}
+
+.dark-select .react-select__dropdown-indicator:hover {
+  color: #c084fc; /* violet-400 */
+}
