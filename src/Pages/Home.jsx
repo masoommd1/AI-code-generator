@@ -3,6 +3,7 @@ import NavBar from "../components/NavBar";
 import Select from "react-select";
 import { BsStars } from "react-icons/bs";
 
+
 const Home = () => {
   const options = [
     { value: "html-css", label: "HTML + CSS" },
@@ -45,8 +46,11 @@ const Home = () => {
             <BsStars /> Generate</button>
           </div>
         </div>
-        <div className="left w-[50%] h-[85vh] mt-5 bg-gray-800 rounded-2xl "></div>
+        <div className="left w-[50%] h-[85vh] mt-5 bg-gray-800 rounded-lg" >
+        
+        </div>
       </div>
+      
     </>
   );
 };
