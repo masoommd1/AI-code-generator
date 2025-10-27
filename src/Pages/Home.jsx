@@ -4,7 +4,8 @@ import Select from "react-select";
 import { BsStars } from "react-icons/bs";
 import { HiOutlineCode } from "react-icons/hi";
 import Editor from "@monaco-editor/react";
-
+import { IoCopy } from "react-icons/io5";
+import { PiExportBold } from "react-icons/pi";
 
 const Home = () => {
   const options = [
@@ -22,10 +23,9 @@ const Home = () => {
     <>
       <NavBar />
       <div className="flex items-center justify-between px-[100px] gap-5">
-
         {/* LEFT side of UI  */}
 
-        <div className="left w-[50%] h-auto mt-5 bg-gray-800 rounded-2xl p-5 ">
+        <div className="right w-[50%] h-auto mt-5 bg-gray-800 rounded-2xl p-5 ">
           <h3 className="font-semibold text-[25px] text-violet-600">
             AI component generator
           </h3>
@@ -62,7 +62,7 @@ const Home = () => {
 
         {/* RIGHT SIDE OF UI IS HERE  */}
 
-        <div className="right w-[50%] h-[85vh] mt-5 bg-gray-800 relative rounded-lg ">
+        <div className="left w-[50%] h-[85vh] mt-5 bg-gray-800 rounded-lg">
           {outputScreen === false ? (
             <>
               <div className="skeleton w-full h-full items-center flex flex-col justify-center">
@@ -102,7 +102,15 @@ const Home = () => {
                   Preview
                 </button>
               </div>
-
+                  <div className="top2 w-full h-[60px] px-5 bg-transparent flex items-center justify-between gap-5 ">
+                    <div className="left">
+                      <p className="font-bold">Code Editor</p>
+                    </div>
+                    <div className="right flex items-center gap-2.5 ">
+                      <button className="copy w-[40px] h-[40px] flex items-center justify-center border-[1px] border-zinc-700 rounded-xl transition-all hover:bg-gray-700 "><IoCopy/></button>
+                      <button className="export w-[40px] h-[40px] flex items-center justify-center border-[1px] border-zinc-700 rounded-xl transition-all hover:bg-gray-700 "><PiExportBold/></button>
+                    </div>
+                  </div>
               <div className="editor">
                 <Editor
                   height="100%"
@@ -110,7 +118,7 @@ const Home = () => {
                   defaultLanguage="javascript"
                   defaultValue="// some comment"
                 />
-                ;
+                
               </div>
             </>
           )}
