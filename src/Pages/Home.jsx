@@ -6,6 +6,8 @@ import { HiOutlineCode } from "react-icons/hi";
 import Editor from "@monaco-editor/react";
 import { IoCopy } from "react-icons/io5";
 import { PiExportBold } from "react-icons/pi";
+import { FiRefreshCcw } from "react-icons/fi";
+import { RxOpenInNewWindow } from "react-icons/rx";
 
 const Home = () => {
   const options = [
@@ -81,7 +83,9 @@ const Home = () => {
             <>
               <div className="top w-full h-[60px] px-5 bg-transparent flex items-center gap-5">
                 <button
-                onClick={()=>{setTab(1)}}
+                  onClick={() => {
+                    setTab(1);
+                  }}
                   className={`w-[50%] p-2.5  rounded-md transition-all cursor-pointer font-semibold ${
                     tab === 1
                       ? "bg-linear-to-r from-purple-400  to-purple-600"
@@ -92,7 +96,9 @@ const Home = () => {
                 </button>
 
                 <button
-                onClick={()=>{setTab(2)}}
+                  onClick={() => {
+                    setTab(2);
+                  }}
                   className={`w-[50%] p-2.5  rounded-md transition-all cursor-pointer font-semibold ${
                     tab === 2
                       ? "bg-linear-to-r from-purple-400  to-purple-600"
@@ -102,23 +108,43 @@ const Home = () => {
                   Preview
                 </button>
               </div>
-                  <div className="top2 w-full h-[60px] px-5 bg-transparent flex items-center justify-between gap-5 ">
-                    <div className="left">
-                      <p className="font-bold">Code Editor</p>
-                    </div>
-                    <div className="right flex items-center gap-2.5 ">
-                      <button className="copy w-[40px] h-[40px] flex items-center justify-center border-[1px] border-zinc-700 rounded-xl transition-all hover:bg-gray-700 "><IoCopy/></button>
-                      <button className="export w-[40px] h-[40px] flex items-center justify-center border-[1px] border-zinc-700 rounded-xl transition-all hover:bg-gray-700 "><PiExportBold/></button>
-                    </div>
-                  </div>
-              <div className="editor">
-                <Editor
-                  height="100%"
-                  theme="vs-dark"
-                  defaultLanguage="javascript"
-                  defaultValue="// some comment"
-                />
-                
+              <div className="top2 w-full h-[60px] px-5 bg-transparent flex items-center justify-between gap-5 ">
+                <div className="left">
+                  <p className="font-bold">Code Editor</p>
+                </div>
+                <div className="right flex items-center gap-2.5 ">
+                  {tab === 1 ? (
+                    <>
+                      <button className="copy w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
+                        <IoCopy />
+                      </button>
+                      <button className="export w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
+                        <PiExportBold />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button className="copy w-10 h-10 flex items-center  justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
+                        <RxOpenInNewWindow/>
+                      </button>
+                      <button className="export w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
+                        <FiRefreshCcw/>
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="editor h-full">
+                {tab === 1 ? (
+                  <Editor
+                    height="100%"
+                    theme="vs-dark"
+                    language="html"
+                    // defaultValue="// some comment"
+                  />
+                ) : (
+                  <div className="preview h-full w-full flex items-center bg-amber-50 text-black justify-center"></div>
+                )}
               </div>
             </>
           )}
