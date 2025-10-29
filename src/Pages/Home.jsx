@@ -8,6 +8,7 @@ import { IoCopy } from "react-icons/io5";
 import { PiExportBold } from "react-icons/pi";
 import { FiRefreshCcw } from "react-icons/fi";
 import { RxOpenInNewWindow } from "react-icons/rx";
+import { GoogleGenAI } from "@google/genai";
 
 const Home = () => {
   const options = [
@@ -18,8 +19,23 @@ const Home = () => {
     { value: "html-tailwind-bootstrap", label: "HTML + Tailwind + Bootstrap" },
   ];
 
+  // AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo
+
   const [outputScreen, setOutputScreen] = useState(true);
   const [tab, setTab] = useState(1);
+
+  // The client gets the API key from the environment variable `GEMINI_API_KEY`.
+  const ai = new GoogleGenAI({
+    apiKey: "AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo",
+  });
+
+  async function getResponse() {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: "Explain how AI works in a few words",
+    });
+    console.log(response.text);
+  }
 
   return (
     <>
@@ -54,11 +70,10 @@ const Home = () => {
             </p>
 
             <button
+              onClick={getResponse}
               className="generate flex items-center p-4 rounded-lg mt-3  gap-2.5 px-5 transition-all 
               hover:opacity-[0.8] bg-linear-to-r from-purple-400  to-purple-600"
-            >
-              <BsStars /> Generate
-            </button>
+            ><BsStars /> Generate</button>
           </div>
         </div>
 
@@ -125,10 +140,10 @@ const Home = () => {
                   ) : (
                     <>
                       <button className="copy w-10 h-10 flex items-center  justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
-                        <RxOpenInNewWindow/>
+                        <RxOpenInNewWindow />
                       </button>
                       <button className="export w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
-                        <FiRefreshCcw/>
+                        <FiRefreshCcw />
                       </button>
                     </>
                   )}
