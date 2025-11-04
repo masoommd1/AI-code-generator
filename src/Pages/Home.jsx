@@ -9,6 +9,7 @@ import { PiExportBold } from "react-icons/pi";
 import { FiRefreshCcw } from "react-icons/fi";
 import { RxOpenInNewWindow } from "react-icons/rx";
 import { GoogleGenAI } from "@google/genai";
+import { meta } from "@eslint/js";
 
 const Home = () => {
   const options = [
@@ -23,18 +24,36 @@ const Home = () => {
 
   const [outputScreen, setOutputScreen] = useState(true);
   const [tab, setTab] = useState(1);
+  const [prompt, setPrompt] = useState("");
+  const [frameWork, setFrameWork] = useState(options[0 ]);
 
   // The client gets the API key from the environment variable `GEMINI_API_KEY`.
   const ai = new GoogleGenAI({
-    apiKey: "AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo",
+    apiKey: import.meta.env.VITE_GEMINI_API_KEY  || "AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo",
   });
 
   async function getResponse() {
+    try{
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: "Explain how AI works in a few words",
+      contents: ` You are an experienced programmer with expertise in web development and UI/UX design. You create modern, animated, and fully responsive UI components. You are highly skilled in HTML, CSS, Tailwind CSS, Bootstrap, JavaScript, React, Next.js, Vue.js, Angular, and more.
+
+Now, generate a UI component for: ${prompt}  
+Framework to use: ${frameWork.value}  
+
+Requirements:  
+The code must be clean, well-structured, and easy to understand.  
+Optimize for SEO where applicable.  
+Focus on creating a modern, animated, and responsive UI design.  
+Include high-quality hover effects, shadows, animations, colors, and typography.  
+Return ONLY the code, formatted properly in **Markdown fenced code blocks**.  
+Do NOT include explanations, text, comments, or anything else besides the code.  
+And give the whole code in a single HTML file.`,
     });
     console.log(response.text);
+  }catch(error){
+    console.log(error);
+  }
   }
 
   return (
@@ -56,11 +75,19 @@ const Home = () => {
             className="dark-select mt-2 "
             classNamePrefix="react-select"
             options={options}
+            onChange={(e)=>{
+              setFrameWork(e.value)
+              console.log(e);
+            }}
           />
           <p className="text-[15px] font-semibold mt-4">
             Describe Your Components
           </p>
           <textarea
+            onChange={(e) => {
+              setPrompt(e.target.value);
+            }}
+            value={prompt}
             className="w-full min-h-[250px] bg-[#111827] mt-3 rounded-xl p-2.5  hover:border  border-purple-500 "
             placeholder="Describe Your Components in detail"
           ></textarea>
@@ -73,7 +100,9 @@ const Home = () => {
               onClick={getResponse}
               className="generate flex items-center p-4 rounded-lg mt-3  gap-2.5 px-5 transition-all 
               hover:opacity-[0.8] bg-linear-to-r from-purple-400  to-purple-600"
-            ><BsStars /> Generate</button>
+            >
+              <BsStars /> Generate
+            </button>
           </div>
         </div>
 
