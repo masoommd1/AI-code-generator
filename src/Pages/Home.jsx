@@ -10,6 +10,7 @@ import { FiRefreshCcw } from "react-icons/fi";
 import { RxOpenInNewWindow } from "react-icons/rx";
 import { GoogleGenAI } from "@google/genai";
 import { meta } from "@eslint/js";
+import { BounceLoader, ClipLoader, PulseLoader } from "react-spinners";
 
 const Home = () => {
   const options = [
@@ -22,21 +23,26 @@ const Home = () => {
 
   // AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo
 
-  const [outputScreen, setOutputScreen] = useState(true);
+  const [outputScreen, setOutputScreen] = useState(false);
   const [tab, setTab] = useState(1);
   const [prompt, setPrompt] = useState("");
-  const [frameWork, setFrameWork] = useState(options[0 ]);
+  const [frameWork, setFrameWork] = useState(options[0]);
+  const [code, setCode] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // The client gets the API key from the environment variable `GEMINI_API_KEY`.
   const ai = new GoogleGenAI({
-    apiKey: import.meta.env.VITE_GEMINI_API_KEY  || "AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo",
+    apiKey:
+      import.meta.env.VITE_GEMINI_API_KEY ||
+      "AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo",
   });
 
   async function getResponse() {
-    try{
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: ` You are an experienced programmer with expertise in web development and UI/UX design. You create modern, animated, and fully responsive UI components. You are highly skilled in HTML, CSS, Tailwind CSS, Bootstrap, JavaScript, React, Next.js, Vue.js, Angular, and more.
+    setLoading(true);
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: ` You are an experienced programmer with expertise in web development and UI/UX design. You create modern, animated, and fully responsive UI components. You are highly skilled in HTML, CSS, Tailwind CSS, Bootstrap, JavaScript, React, Next.js, Vue.js, Angular, and more.
 
 Now, generate a UI component for: ${prompt}  
 Framework to use: ${frameWork.value}  
@@ -49,11 +55,14 @@ Include high-quality hover effects, shadows, animations, colors, and typography.
 Return ONLY the code, formatted properly in **Markdown fenced code blocks**.  
 Do NOT include explanations, text, comments, or anything else besides the code.  
 And give the whole code in a single HTML file.`,
-    });
-    console.log(response.text);
-  }catch(error){
-    console.log(error);
-  }
+      });
+      console.log(response.text);
+      setOutputScreen(true);
+      setCode(response.text);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -75,12 +84,12 @@ And give the whole code in a single HTML file.`,
             className="dark-select mt-2 "
             classNamePrefix="react-select"
             options={options}
-            onChange={(e)=>{
-              setFrameWork(e.value)
+            onChange={(e) => {
+              setFrameWork(e.value);
               console.log(e);
             }}
           />
-          <p className="text-[15px] font-semibold mt-4">
+          <p className="text-[15px] font-semibold mt-4 ">
             Describe Your Components
           </p>
           <textarea
@@ -88,12 +97,12 @@ And give the whole code in a single HTML file.`,
               setPrompt(e.target.value);
             }}
             value={prompt}
-            className="w-full min-h-[250px] bg-[#111827] mt-3 rounded-xl p-2.5  hover:border  border-purple-500 "
+            className="w-full min-h-[250px] bg-[#111827] mt-3 rounded-xl p-2.5  "
             placeholder="Describe Your Components in detail"
           ></textarea>
           <div className="flex items-center justify-between px-2.5">
             <p className="text-gray-500 text-[17px] font-semibold">
-              Click to Generate the Code{" "}
+              Click to Generate the Code
             </p>
 
             <button
@@ -108,9 +117,21 @@ And give the whole code in a single HTML file.`,
 
         {/* RIGHT SIDE OF UI IS HERE  */}
 
-        <div className="left w-[50%] h-[85vh] mt-5 bg-gray-800 rounded-lg">
+        <div className="left relative w-[50%] h-[82vh] mt-5 bg-gray-800 rounded-lg">
           {outputScreen === false ? (
             <>
+              {loading === true ? (
+                <>
+                  <div className="loader absolute left-0 top-0 w-full h-full flex items-center justify-center bg-[rgba(0,0,0,0.5)]">
+                    {/* <ClipLoader /> */}
+                    {/* <BounceLoader/> */}
+                    <PulseLoader />
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+
               <div className="skeleton w-full h-full items-center flex flex-col justify-center">
                 <div
                   className="circle p-5 h-[100px] w-[100px] rounded-[50%] flex items-center justify-center text-2xl
@@ -184,6 +205,7 @@ And give the whole code in a single HTML file.`,
                     height="100%"
                     theme="vs-dark"
                     language="html"
+                    value={code}
                     // defaultValue="// some comment"
                   />
                 ) : (
