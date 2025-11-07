@@ -9,8 +9,8 @@ import { PiExportBold } from "react-icons/pi";
 import { FiRefreshCcw } from "react-icons/fi";
 import { RxOpenInNewWindow } from "react-icons/rx";
 import { GoogleGenAI } from "@google/genai";
-import { meta } from "@eslint/js";
 import { BounceLoader, ClipLoader, PulseLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const options = [
@@ -21,14 +21,19 @@ const Home = () => {
     { value: "html-tailwind-bootstrap", label: "HTML + Tailwind + Bootstrap" },
   ];
 
-  // AIzaSyCKom0ugvBn5YoZXP7wzmHUfMZ9VKFHNwo
-
   const [outputScreen, setOutputScreen] = useState(false);
   const [tab, setTab] = useState(1);
   const [prompt, setPrompt] = useState("");
   const [frameWork, setFrameWork] = useState(options[0]);
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // using regex to extract the code from triple back ticks
+
+  function extractCode(response) {
+    const match = response.match(/```(?:\w+)?\n?([\s\S]*?)```/);
+    return match ? match[1].trim() : response.trim();
+  }
 
   // The client gets the API key from the environment variable `GEMINI_API_KEY`.
   const ai = new GoogleGenAI({
@@ -38,7 +43,16 @@ const Home = () => {
   });
 
   async function getResponse() {
+    // Check if prompt is empty
+    if (!prompt.trim()) {
+      toast.error("Please describe your component before generating code! ");
+      return;
+    }
+    setOutputScreen(false); // Reset to show loading state
     setLoading(true);
+
+    // ... rest of your existing code
+    // setLoading(true);
     try {
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
@@ -58,12 +72,28 @@ And give the whole code in a single HTML file.`,
       });
       console.log(response.text);
       setOutputScreen(true);
-      setCode(response.text);
+      setCode(extractCode(response.text));
       setLoading(false);
     } catch (error) {
       console.log(error);
+      // Keep output screen visible even on error
+      setOutputScreen(true);
+      setCode("// Error generating code. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
+
+  // funtion for copying code
+  const copyCode = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      toast.success("Code copies to clipboard");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+      toast.error("Failed to copy");
+    }
+  };
 
   return (
     <>
@@ -96,10 +126,24 @@ And give the whole code in a single HTML file.`,
             onChange={(e) => {
               setPrompt(e.target.value);
             }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); // Prevents new line
+                getResponse();
+              }
+            }}
             value={prompt}
-            className="w-full min-h-[250px] bg-[#111827] mt-3 rounded-xl p-2.5  "
-            placeholder="Describe Your Components in detail"
+            className="w-full min-h-[250px] bg-[#111827] mt-3 rounded-xl p-2.5 placeholder-gray-500 "
+            placeholder="Describe your UI component requirements in detail...
+
+Example specifications:
+• Responsive navigation bar with dark theme
+• User profile card with hover animations  
+• E-commerce product grid with filter options
+• Dashboard statistics widget with charts
+• Contact form with validation states"
           ></textarea>
+
           <div className="flex items-center justify-between px-2.5">
             <p className="text-gray-500 text-[17px] font-semibold">
               Click to Generate the Code
@@ -180,7 +224,10 @@ And give the whole code in a single HTML file.`,
                 <div className="right flex items-center gap-2.5 ">
                   {tab === 1 ? (
                     <>
-                      <button className="copy w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
+                      <button
+                        onClick={copyCode}
+                        className="copy w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 "
+                      >
                         <IoCopy />
                       </button>
                       <button className="export w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
