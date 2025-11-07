@@ -93,10 +93,24 @@ And give the whole code in a single HTML file.`,
     }
   };
 
+  // funtion for export or download 
+
+  const downloadFile = ()=>{
+    const fileName = "GenAI-Code.html"
+    const blob = new Blob([code],{type: 'text/plain'})
+    let url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.createObjectURL(url);
+  }
+
+
   return (
     <>
       <NavBar />
-      <div className="flex items-center justify-between px-[100px] gap-5">
+      <div className="flex items-center justify-between px-[100px] gap-4">
         {/* LEFT side of UI  */}
 
         <div className="right w-[50%] h-auto mt-5 bg-gray-800 rounded-2xl p-5 ">
@@ -131,7 +145,7 @@ And give the whole code in a single HTML file.`,
               }
             }}
             value={prompt}
-            className="w-full min-h-[250px] bg-[#111827] mt-3 rounded-xl p-2.5 placeholder-gray-500 "
+            className="w-full min-h-[250px] bg-[#111827] mt-3 rounded-xl p-2.5 placeholder-gray-600 "
             placeholder="Describe your UI component requirements in detail...
 
 Example specifications:
@@ -159,7 +173,7 @@ Example specifications:
 
         {/* RIGHT SIDE OF UI IS HERE  */}
 
-        <div className="left relative w-[50%] h-[82vh] mt-5 bg-gray-800 rounded-lg">
+        <div className="left relative w-[50%] h-[82vh] max-h-screen mt-5 bg-gray-800 rounded-lg">
           {outputScreen === false ? (
             <>
               {loading === true ? (
@@ -224,11 +238,15 @@ Example specifications:
                     <>
                       <button
                         onClick={copyCode}
+                        title="copy"
                         className="copy w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 "
                       >
                         <IoCopy />
                       </button>
-                      <button className="export w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
+                      <button
+                      onClick={downloadFile}
+                      title="Download"
+                       className="export w-10 h-10 flex items-center justify-center border border-zinc-700 rounded-xl transition-all hover:bg-gray-700 ">
                         <PiExportBold />
                       </button>
                     </>
@@ -253,8 +271,8 @@ Example specifications:
                     value={code}
                     // defaultValue="// some comment"
                   />
-                ) : (
-                  <div className="preview h-full w-full flex items-center bg-amber-50 text-black justify-center"></div>
+                ) : ( 
+                  <iframe srcDoc={code} className="previ ew h-full w-full flex items-center bg-amber-50 text-black justify-center"></iframe>
                 )}
               </div>
             </>
