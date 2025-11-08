@@ -19,7 +19,7 @@ const Home = () => {
     { value: "html-tailwind", label: "HTML + Tailwind" },
     { value: "html-bootstrap", label: "HTML + Bootstrap" },
     { value: "html-css-js", label: "HTML + CSS + JS" },
-    { value: "html-tailwind-bootstrap", label: "HTML + Tailwind + Bootstrap" },
+    // { value: "html-tailwind-bootstrap", label: "HTML + Tailwind + Bootstrap" },
   ];
 
   const [outputScreen, setOutputScreen] = useState(false);
